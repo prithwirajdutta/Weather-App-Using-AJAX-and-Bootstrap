@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+  </head>
+  <body style="background-color:#673AB7;"><br><br>
+    <center><div class="container" style="min-width:400px;padding:0px 20px; "><form class="form-group" id="frm">
+            <h1 style="color:white;">AJAX Weather App</h1><br>
+           <div class="row">
+                <div class="col-md-5"> <input type="text" class="form-control" name="country" id="country" placeholder="country"/><br>
+           </div>
+                <div class="col-md-5"> <input type="text" class="form-control" name="city" id="city" placeholder="city"/><br>
+           </div>
+                <div class="col-md-2"> <input type="submit" class="btn btn-danger" value="Get Weather"/></div>
+            </div>
+        </form>
+        <div class="card" style="width:100%;min-height:400px;margin-top:30px;">
+        <div style="padding:10px;"><p id="ab"></p></div>
+        </div>
+        </div>   
+        </center>
+<br>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+  </body>
+    <script>
+        var frm = document.querySelector("#frm");
+        frm.addEventListener("submit",function(e){
+                e.preventDefault();
+           loadDoc(); 
+        });
+        function loadDoc() {
+
+            const country = document.querySelector("#country").value;
+            const city = document.querySelector("#city").value;
+        
+          var xhttp = new XMLHttpRequest();
+          xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                var data = JSON.parse(this.responseText);
+                console.log(data);
+                var tempc = data.current_observation.temp_c;
+                var icon = data.current_observation.icon_url;
+                var loc = data.current_observation.display_location.full;
+                document.getElementById("ab").innerHTML = "<img src='"+icon+"' width='40px' height='40px' /><br>Location : "+loc + "<br>Temp in &deg;C : " + tempc;
+            }
+          };
+          xhttp.open("GET", `http://api.wunderground.com/api/73b0005b139fa130/conditions/q/${country}/${city}.json`, true);
+          xhttp.send();
+        }
+    </script>
+</html>
